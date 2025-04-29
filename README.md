@@ -32,7 +32,7 @@ A time management application based on the Pomodoro technique to help increase p
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/yourusername/kirsh_pomodoro.git
+   git clone https://github.com/KirshWay/kirsh_pomodoro
    cd kirsh_pomodoro
    ```
 
@@ -54,3 +54,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ```bash
 docker compose -f compose.dev.yaml up --build -d
 ```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,12 +1,19 @@
 'use client';
 
-import { Timer } from 'lucide-react';
+import { LogIn, LogOut, Timer, CircleUserRound, Bolt } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useAppSelector } from '@/lib/store/hooks';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +21,11 @@ export const Header = () => {
   const pathname = usePathname();
   const { mode } = useAppSelector((state) => state.timer);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+
+  // NOTE: temporary data
+  const isAuthenticated = true;
+  const user = { username: 'John Doe' };
+  const loading = false;
 
   const isActive = (path: string) => {
     return pathname === path;
@@ -83,37 +95,37 @@ export const Header = () => {
             </Link>
           </Button>
 
-          {/* TODO: Add pages */}
-
-          {/* <Button
-            variant={isActive('/history') ? 'default' : 'ghost'}
-            size="sm"
-            className={cn(
-              'flex items-center space-x-1',
-              isActive('/history') && getActiveButtonStyles()
-            )}
-            asChild
-          >
-            <Link href="/history">
-              <BarChart2 className="h-4 w-4" />
-              <span>History</span>
-            </Link>
-          </Button>
-
-          <Button
-            variant={isActive('/settings') ? 'default' : 'ghost'}
-            size="sm"
-            className={cn(
-              'flex items-center space-x-1',
-              isActive('/settings') && getActiveButtonStyles()
-            )}
-            asChild
-          >
-            <Link href="/settings">
-              <Settings className="h-4 w-4" />
-              <span>Settings</span>
-            </Link>
-          </Button> */}
+          {isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <CircleUserRound className="mr-1 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  {user?.username}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-36">
+                <DropdownMenuGroup>
+                  <DropdownMenuItem className="flex items-center justify-between">
+                    <span>Settings</span>
+                    <Bolt className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <Link href="/auth/login">
+                  <DropdownMenuItem className="flex items-center justify-between">
+                    <span>Log out</span>
+                    <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button className="h-8 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm" variant="ghost" asChild>
+              <Link href="/auth/login">
+                <LogIn className="mr-1 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                Войти
+              </Link>
+            </Button>
+          )}
         </nav>
       </div>
     </header>
