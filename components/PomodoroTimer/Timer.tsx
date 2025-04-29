@@ -77,17 +77,22 @@ export const Timer = () => {
     <div className="flex flex-col items-center">
       <CircularProgress
         value={progress}
-        size={320}
+        size={{ base: 260, sm: 280, md: 320 }}
         thickness={6}
         className={cn('text-white')}
         pathClassName={getProgressColor()}
       >
-        <div className="text-[6rem] font-light leading-none">{formatTime(timeLeft)}</div>
+        <div className="text-[4rem] sm:text-[5rem] md:text-[6rem] font-light leading-none">
+          {formatTime(timeLeft)}
+        </div>
       </CircularProgress>
 
-      <div className="mt-8 flex gap-3">
+      <div className="mt-6 sm:mt-8 flex gap-2 sm:gap-3">
         <Button
-          className={cn('px-12 py-6 text-xl bg-white hover:bg-gray-100', getButtonColor())}
+          className={cn(
+            'px-6 sm:px-8 md:px-12 py-4 sm:py-6 text-lg sm:text-xl bg-white hover:bg-gray-100',
+            getButtonColor()
+          )}
           onClick={handleStartPause}
         >
           {status === 'running' ? 'PAUSE' : 'START'}
@@ -95,7 +100,10 @@ export const Timer = () => {
 
         {(status === 'paused' || status === 'finished') && (
           <Button
-            className={cn('px-12 py-6 text-xl bg-white hover:bg-gray-100', getButtonColor())}
+            className={cn(
+              'px-6 sm:px-8 md:px-12 py-4 sm:py-6 text-lg sm:text-xl bg-white hover:bg-gray-100',
+              getButtonColor()
+            )}
             onClick={handleReset}
           >
             RESET

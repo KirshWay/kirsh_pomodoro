@@ -62,26 +62,26 @@ export const TaskList = () => {
 
   if (status === 'loading') {
     return (
-      <div className="w-full max-w-md mx-auto p-4">
+      <div className="w-full max-w-md mx-auto p-3 sm:p-4">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-2xl font-bold text-white">Tasks</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-white">Tasks</h2>
         </div>
-        <div className="h-[1px] bg-white/20 w-full mb-6" />
+        <div className="h-[1px] bg-white/20 w-full mb-4 sm:mb-6" />
         <div className="text-white/70 text-center py-4">Loading tasks...</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-4">
+    <div className="w-full max-w-md mx-auto p-3 sm:p-4">
       <div className="flex justify-between items-center mb-2">
-        <h2 className="text-2xl font-bold text-white">Tasks</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-white">Tasks</h2>
       </div>
 
-      <div className="h-[1px] bg-white/20 w-full mb-6" />
+      <div className="h-[1px] bg-white/20 w-full mb-4 sm:mb-6" />
 
       {tasks.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           <AnimatePresence>
             {tasks.map((task) => (
               <motion.div
@@ -94,7 +94,7 @@ export const TaskList = () => {
                 }}
                 exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white/10 p-3 rounded-md flex items-start gap-3 relative overflow-hidden"
+                className="bg-white/10 p-2 sm:p-3 rounded-md flex items-start gap-2 sm:gap-3 relative overflow-hidden"
               >
                 {completedAnimation === task.id && <CompletionRipple />}
 
@@ -164,11 +164,11 @@ export const TaskList = () => {
                     )}
 
                     <div className="flex items-center mt-2">
-                      <span className="text-sm text-white/70">
+                      <span className="text-xs sm:text-sm text-white/70">
                         {task.estimatedPomodoros} pomodoro{task.estimatedPomodoros !== 1 ? 's' : ''}
                       </span>
                       {task.project && (
-                        <span className="ml-2 text-sm bg-white/20 px-2 py-0.5 rounded text-white/70">
+                        <span className="ml-2 text-xs sm:text-sm bg-white/20 px-2 py-0.5 rounded text-white/70">
                           {task.project}
                         </span>
                       )}
@@ -207,12 +207,12 @@ export const TaskList = () => {
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
           <DialogTitle />
           <DialogTrigger asChild>
-            <button className="mt-4 w-full border border-dashed border-white/30 text-white/70 rounded-md py-4 flex items-center justify-center">
-              <Plus className="h-5 w-5 mr-2" />
+            <button className="mt-4 w-full border border-dashed border-white/30 text-white/70 rounded-md py-3 sm:py-4 flex items-center justify-center">
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2" />
               Add Task
             </button>
           </DialogTrigger>
-          <DialogContent className="bg-white p-0 sm:max-w-md">
+          <DialogContent className="bg-white p-0 max-w-[calc(100%-2rem)] sm:max-w-md">
             <AddTaskForm onCancel={handleCloseDialog} />
           </DialogContent>
         </Dialog>

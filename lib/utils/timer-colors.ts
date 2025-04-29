@@ -1,9 +1,5 @@
 import { TimerMode } from '@/lib/store/timerSlice';
 
-/**
- * Utility functions for getting colors based on timer mode
- */
-
 export const getBackgroundColor = (mode: TimerMode): string => {
   switch (mode) {
     case 'pomodoro':

@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useTaskActions } from '@/lib/store/tasksHooks';
 
 const formSchema = z.object({
-  title: z.string().min(1, 'Необходимо название задачи'),
+  title: z.string().min(1, 'Title is required'),
 });
 
 type AddTaskFormProps = {
@@ -54,8 +54,8 @@ export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="p-4 border-b border-gray-100">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
+        <div className="p-3 sm:p-4 border-b border-gray-100">
           <FormField
             control={form.control}
             name="title"
@@ -65,17 +65,17 @@ export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
                   <Input
                     {...field}
                     placeholder="What are you working on?"
-                    className="text-lg border-none p-0 focus-visible:ring-0 placeholder:text-gray-400"
+                    className="text-base sm:text-lg border-none p-0 focus-visible:ring-0 placeholder:text-gray-400"
                   />
                 </FormControl>
               </FormItem>
             )}
           />
 
-          <div className="mt-4">
-            <p className="text-sm text-gray-600 mb-2">Est Pomodoros</p>
+          <div className="mt-3 sm:mt-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">Est Pomodoros</p>
             <div className="flex items-center">
-              <div className="w-24 h-10 bg-gray-100 flex items-center justify-center rounded-md mr-2">
+              <div className="w-16 sm:w-24 h-8 sm:h-10 bg-gray-100 flex items-center justify-center rounded-md mr-2">
                 {pomodorosCount}
               </div>
               <div className="flex flex-col">
@@ -83,19 +83,19 @@ export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
                   type="button"
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-6 w-6 sm:h-8 sm:w-8"
                   onClick={incrementPomodoros}
                 >
-                  <ChevronUp className="h-4 w-4" />
+                  <ChevronUp className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8 mt-1"
+                  className="h-6 w-6 sm:h-8 sm:w-8 mt-1"
                   onClick={decrementPomodoros}
                 >
-                  <ChevronDown className="h-4 w-4" />
+                  <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </div>
             </div>
@@ -135,11 +135,11 @@ export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
           </div>
         </div>
 
-        <div className="bg-gray-100 p-4 flex justify-end">
-          <Button type="button" variant="ghost" onClick={onCancel} className="mr-2">
+        <div className="flex items-center justify-end gap-2 sm:gap-3 p-3 sm:p-4 border-t border-gray-100">
+          <Button type="button" variant="outline" onClick={onCancel} className="text-xs sm:text-sm">
             Cancel
           </Button>
-          <Button type="submit" className="bg-gray-900 hover:bg-gray-800">
+          <Button type="submit" className="text-xs sm:text-sm">
             Save
           </Button>
         </div>

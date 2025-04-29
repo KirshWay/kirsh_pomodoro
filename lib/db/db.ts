@@ -64,5 +64,3 @@ export const taskDb = {
     return db.tasks.get(id);
   },
 };
-
-export default db;

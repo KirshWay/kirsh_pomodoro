@@ -3,10 +3,10 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
       .register('/sw.js')
       .then((registration) => {
-        console.log('ServiceWorker зарегистрирован успешно:', registration.scope);
+        console.log('ServiceWorker successfully registered:', registration.scope);
       })
       .catch((error) => {
-        console.error('Ошибка при регистрации ServiceWorker:', error);
+        console.error('Error registering ServiceWorker:', error);
       });
   });
 }

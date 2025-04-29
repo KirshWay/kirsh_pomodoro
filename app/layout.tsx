@@ -18,13 +18,13 @@ export const viewport: Viewport = {
   themeColor: '#ff5757',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export const metadata: Metadata = {
   title: 'Kirsh Pomodoro',
-  description: 'Приложение для управления временем с использованием техники Pomodoro',
+  description: 'Application for time management using the Pomodoro technique',
   applicationName: 'Kirsh Pomodoro',
   manifest: '/manifest.json',
   appleWebApp: {
@@ -61,8 +61,14 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"
+        />
       </head>
-      <body className={`flex min-h-screen flex-col font-mono ${jetbrainsMono.className}`}>
+      <body
+        className={`flex min-h-screen flex-col font-mono overflow-x-hidden ${jetbrainsMono.className}`}
+      >
         <Providers>
           <Header />
           <main className="flex-1">{children}</main>

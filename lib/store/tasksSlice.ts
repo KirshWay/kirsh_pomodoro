@@ -1,12 +1,12 @@
-import { createAsyncThunk,createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { Task,taskDb } from '../db/db';
+import { Task, taskDb } from '../db/db';
 
-interface TasksState {
+type TasksState = {
   tasks: Task[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
-}
+};
 
 const initialState: TasksState = {
   tasks: [],

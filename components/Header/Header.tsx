@@ -47,10 +47,10 @@ export const Header = () => {
 
   return (
     <header className={cn('w-full border-b', getHeaderStyles())}>
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4">
         <Link
           href="/"
-          className="flex items-center space-x-3 group"
+          className="flex items-center space-x-2 sm:space-x-3 group"
           onMouseEnter={() => setIsLogoHovered(true)}
           onMouseLeave={() => setIsLogoHovered(false)}
         >
@@ -60,28 +60,26 @@ export const Header = () => {
             <Image
               src="/icons/image.png"
               alt="Pomodoro Logo"
-              width={32}
-              height={32}
-              className="object-contain"
+              width={28}
+              height={28}
+              className="object-contain sm:w-8 sm:h-8"
             />
           </div>
           <span
-            className={`text-xl font-bold transition-all duration-300 ${isLogoHovered ? 'text-orange-500' : ''}`}
+            className={`text-lg sm:text-xl font-bold transition-all duration-300 ${isLogoHovered ? 'text-orange-500' : ''}`}
           >
             Kirsh Pomodoro
           </span>
         </Link>
 
-        <nav className="flex items-center space-x-4">
+        <nav className="flex items-center space-x-1 sm:space-x-2">
           <Button
-            variant={isActive('/') ? 'default' : 'ghost'}
-            size="sm"
-            className={cn('flex items-center space-x-1', isActive('/') && getActiveButtonStyles())}
+            className={`h-8 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm ${isActive('/') ? getActiveButtonStyles() : ''}`}
             asChild
           >
             <Link href="/">
-              <Timer className="h-4 w-4" />
-              <span>Timer</span>
+              <Timer className="mr-1 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              Timer
             </Link>
           </Button>
 

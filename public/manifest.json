@@ -1,7 +1,7 @@
 {
   "name": "Kirsh Pomodoro",
   "short_name": "Pomodoro",
-  "description": "Приложение для управления временем с использованием техники Pomodoro",
+  "description": "Application for time management using the Pomodoro technique",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
