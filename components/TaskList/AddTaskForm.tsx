@@ -1,29 +1,30 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronUp, ChevronDown, Plus } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { Task } from './TaskList';
+import { useTaskActions } from '@/lib/store/tasksHooks';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Необходимо название задачи'),
 });
 
 type AddTaskFormProps = {
-  onAddTask: (task: Task) => void;
   onCancel: () => void;
 };
 
-export const AddTaskForm = ({ onAddTask, onCancel }: AddTaskFormProps) => {
+export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
   const [pomodorosCount, setPomodorosCount] = useState(1);
   const [showNoteForm, setShowNoteForm] = useState(false);
   const [note, setNote] = useState('');
+  const { addTask } = useTaskActions();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -32,13 +33,13 @@ export const AddTaskForm = ({ onAddTask, onCancel }: AddTaskFormProps) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    onAddTask({
-      id: Date.now().toString(),
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    await addTask({
       title: values.title,
       estimatedPomodoros: pomodorosCount,
       note: note.trim() ? note : undefined,
     });
+    onCancel();
   };
 
   const incrementPomodoros = () => {

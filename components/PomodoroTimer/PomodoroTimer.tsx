@@ -1,13 +1,15 @@
 'use client';
 
+import { AnimatePresence, motion } from 'motion/react';
 import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
-import { TimerMode, setTimerMode } from '@/lib/store/timerSlice';
+import { setTimerMode, TimerMode } from '@/lib/store/timerSlice';
 import { cn } from '@/lib/utils';
+import { getCardBgColor, getTabsBgColorActive,getTabsListBgColor } from '@/lib/utils/timer-colors';
+
 import { Timer } from './Timer';
 
 export const PomodoroTimer = () => {
@@ -16,45 +18,6 @@ export const PomodoroTimer = () => {
 
   const handleValueChange = (value: string) => {
     dispatch(setTimerMode(value as TimerMode));
-  };
-
-  const getCardBgColor = () => {
-    switch (mode) {
-      case 'pomodoro':
-        return 'bg-red-700/90';
-      case 'shortBreak':
-        return 'bg-green-800/90';
-      case 'longBreak':
-        return 'bg-blue-600/90';
-      default:
-        return 'bg-red-700/90';
-    }
-  };
-
-  const getTabsListBgColor = () => {
-    switch (mode) {
-      case 'pomodoro':
-        return 'bg-red-800/50';
-      case 'shortBreak':
-        return 'bg-green-900/50';
-      case 'longBreak':
-        return 'bg-blue-700/50';
-      default:
-        return 'bg-red-800/50';
-    }
-  };
-
-  const getTabsBgColorActive = () => {
-    switch (mode) {
-      case 'pomodoro':
-        return 'data-[state=active]:bg-red-900';
-      case 'shortBreak':
-        return 'data-[state=active]:bg-green-950';
-      case 'longBreak':
-        return 'data-[state=active]:bg-blue-800';
-      default:
-        return 'data-[state=active]:bg-red-900';
-    }
   };
 
   return (
@@ -66,20 +29,26 @@ export const PomodoroTimer = () => {
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Card className={cn('w-[500px] text-white', getCardBgColor())}>
+        <Card className={cn('w-[500px] text-white', getCardBgColor(mode))}>
           <CardContent className="p-6">
             <Tabs value={mode} onValueChange={handleValueChange} className="w-full">
-              <TabsList className={cn('grid w-full grid-cols-3', getTabsListBgColor())}>
-                <TabsTrigger value="pomodoro" className={cn('text-white', getTabsBgColorActive())}>
+              <TabsList className={cn('grid w-full grid-cols-3', getTabsListBgColor(mode))}>
+                <TabsTrigger
+                  value="pomodoro"
+                  className={cn('text-white', getTabsBgColorActive(mode))}
+                >
                   Pomodoro
                 </TabsTrigger>
                 <TabsTrigger
                   value="shortBreak"
-                  className={cn('text-white', getTabsBgColorActive())}
+                  className={cn('text-white', getTabsBgColorActive(mode))}
                 >
                   Short Break
                 </TabsTrigger>
-                <TabsTrigger value="longBreak" className={cn('text-white', getTabsBgColorActive())}>
+                <TabsTrigger
+                  value="longBreak"
+                  className={cn('text-white', getTabsBgColorActive(mode))}
+                >
                   Long Break
                 </TabsTrigger>
               </TabsList>

@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { CircularProgress } from '@/components/ui/circular-progress';
+
 import { Button } from '@/components/ui/button';
+import { CircularProgress } from '@/components/ui/circular-progress';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { pauseTimer, resetTimer, startTimer, updateTimer } from '@/lib/store/timerSlice';
 import { cn } from '@/lib/utils';

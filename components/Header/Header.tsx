@@ -1,17 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
+import { Timer } from 'lucide-react';
 import Image from 'next/image';
-import { Timer, BarChart2, Settings, LogIn, LogOut } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useState } from 'react';
+
 import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
 import { useAppSelector } from '@/lib/store/hooks';
+import { cn } from '@/lib/utils';
 
 export const Header = () => {
   const pathname = usePathname();
-  const router = useRouter();
   const { mode } = useAppSelector((state) => state.timer);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
 
