@@ -3,8 +3,9 @@
 import { LogIn, LogOut, Timer, CircleUserRound, Bolt } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,13 +20,15 @@ import { cn } from '@/lib/utils';
 
 export const Header = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { mode } = useAppSelector((state) => state.timer);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { data: session, status } = useSession();
 
-  // NOTE: temporary data
-  const isAuthenticated = true;
-  const user = { username: 'John Doe' };
-  const loading = false;
+  const isAuthenticated = !!session;
+
+  const isLoading = status === 'loading';
 
   const isActive = (path: string) => {
     return pathname === path;
@@ -54,6 +57,19 @@ export const Header = () => {
         return 'bg-blue-100 text-blue-700 hover:bg-blue-200 hover:text-blue-800';
       default:
         return 'bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-800';
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await signOut({ redirect: false });
+      router.push('/auth/login');
+      router.refresh();
+    } catch (error) {
+      console.error('Error logging out:', error);
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
@@ -95,12 +111,17 @@ export const Header = () => {
             </Link>
           </Button>
 
-          {isAuthenticated ? (
+          {isLoading ? (
+            <Button variant="outline" disabled>
+              <CircleUserRound className="mr-1 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              Loading...
+            </Button>
+          ) : isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                   <CircleUserRound className="mr-1 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  {user?.username}
+                  {session?.user?.username || session?.user?.email}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-36">
@@ -110,19 +131,21 @@ export const Header = () => {
                     <Bolt className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <Link href="/auth/login">
-                  <DropdownMenuItem className="flex items-center justify-between">
-                    <span>Log out</span>
-                    <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  </DropdownMenuItem>
-                </Link>
+                <DropdownMenuItem
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                >
+                  <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
+                  <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Button className="h-8 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm" variant="ghost" asChild>
               <Link href="/auth/login">
                 <LogIn className="mr-1 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                Войти
+                Login
               </Link>
             </Button>
           )}

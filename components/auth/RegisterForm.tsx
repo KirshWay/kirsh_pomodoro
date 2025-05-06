@@ -2,9 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,26 +18,20 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { register as registerUser } from '@/lib/auth/auth-client';
 
 const registerSchema = z
   .object({
     username: z
       .string()
-      .min(3, { message: 'Username must be at least 3 characters' })
-      .max(30, { message: 'Username must not exceed 30 characters' })
-      .regex(/^[a-zA-Z0-9_-]+$/, {
-        message: 'Username can only contain letters, numbers, dashes, and underscores',
-      }),
+      .min(3, { message: 'Username must be at least 3 characters long' })
+      .max(30, { message: 'Username must not exceed 30 characters' }),
     email: z
       .string()
       .min(1, { message: 'Email is required' })
       .email({ message: 'Enter a valid email' }),
-    password: z
-      .string()
-      .min(6, { message: 'Password must be at least 6 characters' })
-      .regex(/[A-Z]/, { message: 'Password must contain at least one uppercase letter' })
-      .regex(/[0-9]/, { message: 'Password must contain at least one number' }),
-    confirmPassword: z.string().min(1, { message: 'Confirm password' }),
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
+    confirmPassword: z.string().min(1, { message: 'Подтвердите пароль' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
@@ -45,7 +41,8 @@ const registerSchema = z
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
-  const loading = false;
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -57,10 +54,34 @@ export function RegisterForm() {
     },
   });
 
+  const onSubmit = async (values: RegisterFormValues) => {
+    try {
+      setLoading(true);
+
+      await registerUser({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      });
+
+      toast.success('Registration successful');
+      router.push('/');
+      router.refresh();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('An error occurred during registration');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Form {...form}>
       <motion.form
-        onSubmit={form.handleSubmit(() => {})}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="mt-8 space-y-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
