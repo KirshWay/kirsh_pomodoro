@@ -6,7 +6,7 @@ FROM base AS deps
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --no-optional
+RUN pnpm install --frozen-lockfile --no-optional --ignore-scripts
 
 FROM base AS builder
 WORKDIR /app
@@ -37,6 +37,6 @@ USER nextjs
 
 EXPOSE 3000
 
-ENTRYPOINT ["sh", "/docker-entrypoint.sh"]
+ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
 
 CMD ["pnpm", "start"] 
