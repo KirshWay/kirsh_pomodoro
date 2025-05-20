@@ -6,7 +6,7 @@ FROM base AS deps
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install
+RUN pnpm install --frozen-lockfile --no-optional
 
 FROM base AS builder
 WORKDIR /app
@@ -20,7 +20,7 @@ RUN pnpm build
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 COPY --from=builder --chown=nextjs:nodejs /app/next.config.ts ./
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
