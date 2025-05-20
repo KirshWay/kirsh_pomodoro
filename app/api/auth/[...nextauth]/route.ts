@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from '@/lib/db/prisma';
-import { comparePassword } from '@/lib/auth/bcrypt';
+import NextAuth, { Session, User } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
-import { Session, User } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+
+import { comparePassword } from '@/lib/auth/bcrypt';
+import { prisma } from '@/lib/db/prisma';
 
 export const authOptions = {
   providers: [
@@ -68,7 +68,7 @@ export const authOptions = {
   },
   cookies: {
     sessionToken: {
-      name: `next-auth.session-token`,
+      name: 'next-auth.session-token',
       options: {
         httpOnly: true,
         sameSite: 'lax',

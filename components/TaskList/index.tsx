@@ -1,6 +1,6 @@
-import { TaskList } from './TaskList';
 import { MigrationDialog } from './MigrationDialog';
+import { TaskList } from './TaskList';
 
-export { TaskList, MigrationDialog };
+export { MigrationDialog,TaskList };
 
 export * from './AddTaskForm';

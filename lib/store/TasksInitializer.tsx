@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
 import { useAppDispatch } from './hooks';
-import { fetchTasks } from './tasksSlice';
 import { TaskService } from './TaskService';
+import { fetchTasks } from './tasksSlice';
 
 export function TasksInitializer() {
   const dispatch = useAppDispatch();

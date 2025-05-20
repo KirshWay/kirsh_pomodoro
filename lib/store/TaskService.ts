@@ -1,8 +1,8 @@
 import { Session } from 'next-auth';
 
 import { Task, taskDb } from '../db/db';
-import { store } from './store';
 import { tasksApi, useGetTasksQuery } from './api';
+import { store } from './store';
 
 export class TaskService {
   private static instance: TaskService;

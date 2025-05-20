@@ -1,9 +1,9 @@
 'use client';
 
+import { Check, LoaderCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { Check, LoaderCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -14,10 +14,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useAllTasks, useTaskActions } from '@/lib/store/tasksHooks';
-import { useMigrateTasksMutation } from '@/lib/store/api';
-import { cn } from '@/lib/utils';
 import { db } from '@/lib/db/db';
+import { useMigrateTasksMutation } from '@/lib/store/api';
+import { useAllTasks } from '@/lib/store/tasksHooks';
+import { cn } from '@/lib/utils';
 
 export function MigrationDialog() {
   const { data: session } = useSession();

@@ -2,15 +2,15 @@
 
 import { Plus, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useDeleteTaskMutation,useGetTasksQuery, useUpdateTaskMutation } from '@/lib/store/api';
 import { useAllTasks, useTaskActions } from '@/lib/store/tasksHooks';
 import { cn } from '@/lib/utils';
-import { useGetTasksQuery, useUpdateTaskMutation, useDeleteTaskMutation } from '@/lib/store/api';
 
 import { AddTaskForm } from './AddTaskForm';
 

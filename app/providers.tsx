@@ -1,12 +1,12 @@
 'use client';
 
+import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { SessionProvider } from 'next-auth/react';
 
+import { MigrationDialog } from '@/components/TaskList';
 import { store } from '@/lib/store/store';
 import { TasksInitializer } from '@/lib/store/TasksInitializer';
-import { MigrationDialog } from '@/components/TaskList';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

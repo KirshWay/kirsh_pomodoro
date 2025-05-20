@@ -2,17 +2,17 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useTaskActions } from '@/lib/store/tasksHooks';
 import { useCreateTaskMutation } from '@/lib/store/api';
+import { useTaskActions } from '@/lib/store/tasksHooks';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),

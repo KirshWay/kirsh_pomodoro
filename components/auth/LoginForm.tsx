@@ -2,11 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import * as z from 'zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -56,7 +56,7 @@ export function LoginForm() {
       router.push('/');
       router.refresh();
     } catch (error) {
-      toast.error('An error occurred while logging in');
+      toast.error(`An error occurred while logging in: ${error}`);
     } finally {
       setLoading(false);
     }

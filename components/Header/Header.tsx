@@ -1,11 +1,11 @@
 'use client';
 
-import { LogIn, LogOut, Timer, CircleUserRound, Bolt } from 'lucide-react';
+import { Bolt,CircleUserRound, LogIn, LogOut, Timer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { signOut,useSession } from 'next-auth/react';
 import React, { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import {
