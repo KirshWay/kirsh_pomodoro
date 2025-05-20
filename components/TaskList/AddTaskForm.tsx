@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useTaskActions } from '@/lib/store/tasksHooks';
+import { useCreateTaskMutation } from '@/lib/store/api';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -21,10 +23,13 @@ type AddTaskFormProps = {
 };
 
 export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
+  const { data: session } = useSession();
   const [pomodorosCount, setPomodorosCount] = useState(1);
   const [showNoteForm, setShowNoteForm] = useState(false);
   const [note, setNote] = useState('');
-  const { addTask } = useTaskActions();
+
+  const { addTask: addLocalTask } = useTaskActions();
+  const [createServerTask, { isLoading: isCreating }] = useCreateTaskMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,11 +39,18 @@ export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await addTask({
+    const taskData = {
       title: values.title,
       estimatedPomodoros: pomodorosCount,
       note: note.trim() ? note : undefined,
-    });
+    };
+
+    if (session) {
+      await createServerTask(taskData);
+    } else {
+      await addLocalTask(taskData);
+    }
+
     onCancel();
   };
 
@@ -139,8 +151,12 @@ export const AddTaskForm = ({ onCancel }: AddTaskFormProps) => {
           <Button type="button" variant="outline" onClick={onCancel} className="text-xs sm:text-sm">
             Cancel
           </Button>
-          <Button type="submit" className="text-xs sm:text-sm">
-            Save
+          <Button
+            type="submit"
+            className="text-xs sm:text-sm"
+            disabled={isCreating || form.formState.isSubmitting}
+          >
+            {isCreating ? 'Saving...' : 'Save'}
           </Button>
         </div>
       </form>

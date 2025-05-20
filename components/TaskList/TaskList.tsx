@@ -3,12 +3,14 @@
 import { Plus, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useAllTasks, useTaskActions } from '@/lib/store/tasksHooks';
 import { cn } from '@/lib/utils';
+import { useGetTasksQuery, useUpdateTaskMutation, useDeleteTaskMutation } from '@/lib/store/api';
 
 import { AddTaskForm } from './AddTaskForm';
 
@@ -32,8 +34,22 @@ const CompletionRipple = () => {
 };
 
 export const TaskList = () => {
-  const { tasks, status } = useAllTasks();
-  const { toggleTaskComplete, deleteTask } = useTaskActions();
+  const { data: session } = useSession();
+
+  const { tasks: localTasks, status: localStatus } = useAllTasks();
+  const { toggleTaskComplete: toggleLocalTaskComplete, deleteTask: deleteLocalTask } =
+    useTaskActions();
+
+  const { data: serverTasks, isLoading: isServerLoading } = useGetTasksQuery(undefined, {
+    skip: !session,
+  });
+
+  const [updateServerTask] = useUpdateTaskMutation();
+  const [deleteServerTask] = useDeleteTaskMutation();
+
+  const tasks = session ? serverTasks || [] : localTasks;
+  const isLoading = session ? isServerLoading : localStatus === 'loading';
+
   const [openDialog, setOpenDialog] = useState(false);
   const [deleteAnimation, setDeleteAnimation] = useState<string | null>(null);
   const [completedAnimation, setCompletedAnimation] = useState<string | null>(null);
@@ -49,18 +65,30 @@ export const TaskList = () => {
         setCompletedAnimation(null);
       }, 700);
     }
-    toggleTaskComplete(id);
+
+    if (session) {
+      const task = tasks.find((t) => t.id === id);
+      if (task) {
+        updateServerTask({ id, completed: !task.completed });
+      }
+    } else {
+      toggleLocalTaskComplete(id);
+    }
   };
 
   const handleDeleteTask = (id: string) => {
     setDeleteAnimation(id);
     setTimeout(() => {
-      deleteTask(id);
+      if (session) {
+        deleteServerTask(id);
+      } else {
+        deleteLocalTask(id);
+      }
       setDeleteAnimation(null);
     }, 300);
   };
 
-  if (status === 'loading') {
+  if (isLoading) {
     return (
       <div className="w-full max-w-md mx-auto p-3 sm:p-4">
         <div className="flex justify-between items-center mb-2">

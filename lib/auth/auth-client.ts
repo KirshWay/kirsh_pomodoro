@@ -1,6 +1,7 @@
 'use client';
 
 import { signIn, signOut as nextAuthSignOut } from 'next-auth/react';
+import { db } from '@/lib/db/db';
 
 export async function login({ email, password }: { email: string; password: string }) {
   const result = await signIn('credentials', {
@@ -38,6 +39,8 @@ export async function register({
 }
 
 export async function signOut(options?: { callbackUrl?: string }) {
+  localStorage.removeItem('migrationCompleted');
+
   await nextAuthSignOut({
     callbackUrl: options?.callbackUrl || '/',
   });
