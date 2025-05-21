@@ -9,6 +9,7 @@ services:
       NEXTAUTH_URL: ${NEXTAUTH_URL}
       NODE_ENV: production
     networks:
+      - server
       - local
     deploy:
       replicas: 1
@@ -40,5 +41,7 @@ volumes:
 
 networks:
   local:
+  server:
+    external: true
   bridge:
     external: true 
