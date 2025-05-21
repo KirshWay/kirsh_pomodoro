@@ -57,4 +57,4 @@ logs
 .eslintcache
 
 # Prisma generated
-/prisma/generated/
+generated
